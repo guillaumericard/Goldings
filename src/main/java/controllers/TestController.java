@@ -4,13 +4,11 @@ import com.google.inject.Inject;
 import domain.Rates;
 import services.interfaces.RateService;
 
-import java.util.List;
-
 public class TestController {
   @Inject
-  RateService currencyService;
+  RateService rateService;
 
   public Rates getAllRates(){
-    return currencyService.getRates();
+    return rateService.getRates();
   }
 }

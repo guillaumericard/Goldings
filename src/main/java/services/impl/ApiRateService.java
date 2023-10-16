@@ -4,24 +4,39 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import config.Api;
 import config.Config;
 import domain.Rates;
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import services.interfaces.DbService;
 import services.interfaces.RateService;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import javax.inject.Inject;
+import java.sql.*;
+
 
 public class ApiRateService implements RateService {
 
-
+  @Inject
+  DbService dbService;
 
   public Rates getRates() {
     Api api = Config.getInstance().getApi();
     Rates rates = null;
     ObjectMapper mapper = new ObjectMapper();
-    try (CloseableHttpClient client = HttpClients.createDefault()) {
+
+    Connection con = dbService.getConnection();
+    try {
+      PreparedStatement statement = con.prepareStatement("select * from Rates");
+      ResultSet response = statement.executeQuery();
+      while(response.next()){
+        rates = Rates.builder()
+            .base(response.getString("base"))
+            .date(response.getString("date"))
+            .currency(response.getString("currency"))
+            .build();
+        System.out.println(rates);
+      }
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
+/*    try (CloseableHttpClient client = HttpClients.createDefault()) {
 
       HttpGet request = new HttpGet(api.getUrl() + api.getKey());
       Rates response = client.execute(request, httpResponse ->
@@ -30,7 +45,7 @@ public class ApiRateService implements RateService {
 
     } catch (IOException e){
       e.printStackTrace();
-    }
+    }*/
 
     return rates;
   }

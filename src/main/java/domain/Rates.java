@@ -9,6 +9,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+@Builder
 @Getter
 @Setter
 @ToString
@@ -18,6 +19,8 @@ public class Rates {
   String base;
   @JsonProperty("date")
   String date;
+  @JsonProperty("currency")
+  String currency;
   @JsonProperty("rates")
   Map<String,String> rates;
 
