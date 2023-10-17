@@ -14,5 +14,6 @@ public class Main {
     Injector injector = Guice.createInjector(new GuiceConfiguration());
     TestController controller = injector.getInstance(TestController.class);
     Rates rates = controller.getAllRates();
+    System.out.println(rates);
   }
 }

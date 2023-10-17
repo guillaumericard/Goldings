@@ -19,8 +19,6 @@ public class Rates {
   String base;
   @JsonProperty("date")
   String date;
-  @JsonProperty("currency")
-  String currency;
   @JsonProperty("rates")
   Map<String,String> rates;
 
